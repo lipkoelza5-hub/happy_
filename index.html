@@ -263,7 +263,10 @@
         btnBox.classList.add('hidden');
         title.innerText = "Держи свои 100 ₽! 😎";
         subtitle.innerText = "Отсканируй QR-код ниже:"; 
-      
+      const base = "https://api." + "qrserver." + "com/v1/create-qr-code/?size=250x250&data=";
+const tg = "https://" + "t.me/" + "Eelzzzaa?text=торчишь сотку";
+document.getElementById('qr-img').src = base + encodeURIComponent(tg);
+
       
         qrBox.classList.remove('hidden');
       });

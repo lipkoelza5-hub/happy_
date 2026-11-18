@@ -4,7 +4,6 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>С Днём Рождения, Николай Сергеевич! 🖤</title>
-  <script src="https://jsdelivr.net"></script>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
@@ -101,14 +100,14 @@
       0% { transform: scale(0.8); opacity: 0; }
       100% { transform: scale(1); opacity: 1; }
     }
-    .qr-wrapper {
-      background: #ffffff;
-      padding: 14px;
+    #qr-img {
+      width: 220px;
+      height: 220px;
       border-radius: 18px;
+      background: #ffffff;
+      padding: 12px;
+      object-fit: contain;
       box-shadow: 0 12px 35px rgba(0, 0, 0, 0.6);
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
     }
     .qr-hint {
       font-size: 1.05rem;
@@ -138,9 +137,7 @@
     </div>
 
     <div id="qr-box" class="hidden">
-      <div class="qr-wrapper">
-        <canvas id="qr-canvas"></canvas>
-      </div>
+      <img id="qr-img" src="qr.png" alt="QR-код подарка">
       <p class="qr-hint">Наведи камеру телефона, чтобы забрать свои 100 ₽ 💸</p>
     </div>
   </div>
@@ -150,8 +147,6 @@
   </audio>
 
   <script>
-    const TG_LINK = "https://t.me" + encodeURIComponent("торчишь сотку");
-
     const title = document.getElementById('title');
     const subtitle = document.getElementById('subtitle');
     const memeBox = document.getElementById('meme-box');
@@ -268,14 +263,6 @@
         btnBox.classList.add('hidden');
         title.innerText = "Держи свои 100 ₽! 😎";
         subtitle.innerText = "Отсканируй QR-код ниже:";
-
-        new QRious({
-          element: document.getElementById('qr-canvas'),
-          value: TG_LINK,
-          size: 220,
-          level: 'M'
-        });
-
         qrBox.classList.remove('hidden');
       });
     });

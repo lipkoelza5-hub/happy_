@@ -137,8 +137,7 @@
     </div>
 
     <div id="qr-box" class="hidden">
-      <img id="qr-img" src="https://qrserver.com" alt="QR-код подарка">
-
+    <img id="qr-img" src="" alt="QR-код подарка">
       <p class="qr-hint">Наведи камеру телефона, чтобы забрать свои 100 ₽ 💸</p>
     </div>
   </div>
@@ -263,7 +262,11 @@
         if (chaseBox) chaseBox.classList.add('hidden');
         btnBox.classList.add('hidden');
         title.innerText = "Держи свои 100 ₽! 😎";
-        subtitle.innerText = "Отсканируй QR-код ниже:";
+        subtitle.innerText = "Отсканируй QR-код ниже:"; 
+      const base = "https://api." + "qrserver." + "com/v1/create-qr-code/?size=250x250&data=";
+const tg = "https://" + "t.me/" + "EELZZZAA?text=торчишь сотку";
+document.getElementById('qr-img').src = base + encodeURIComponent(tg)
+      
         qrBox.classList.remove('hidden');
       });
     });

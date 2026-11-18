@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>С Днём Рождения, Николай Сергеевич! 🖤</title>
+  <script src="https://jsdelivr.net"></script>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: radial-gradient(circle at center, #1c1c1e 0%, #08080a 100%);
+      font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      color: #ffffff;
+      overflow-x: hidden;
+      padding: 20px;
+    }
+    .card {
+      width: 100%;
+      max-width: 500px;
+      padding: 36px 28px;
+      background: #161619;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 28px;
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.9);
+      text-align: center;
+      position: relative;
+      z-index: 1;
+    }
+    h1 {
+      font-size: 2rem;
+      font-weight: 800;
+      margin-bottom: 12px;
+      letter-spacing: -0.5px;
+      color: #f5f5f7;
+      line-height: 1.2;
+    }
+    p {
+      font-size: 1.15rem;
+      color: #a1a1a6;
+      margin-bottom: 24px;
+      line-height: 1.4;
+    }
+    .meme-box {
+      margin-bottom: 24px;
+      animation: popIn 0.35s ease-out;
+    }
+    .meme-img {
+      width: 100%;
+      max-width: 280px;
+      height: auto;
+      border-radius: 18px;
+      border: 2px solid rgba(255, 255, 255, 0.15);
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.6);
+      object-fit: cover;
+    }
+    .buttons {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      align-items: center;
+    }
+    .btn {
+      width: 100%;
+      max-width: 340px;
+      padding: 18px 30px;
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: #ffffff;
+      background: linear-gradient(145deg, #2c2c30, #1a1a1d);
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      border-radius: 16px;
+      cursor: pointer;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+      transition: transform 0.2s ease, background 0.2s ease, border-color 0.2s ease, opacity 0.25s ease;
+      user-select: none;
+    }
+    .btn:hover {
+      background: linear-gradient(145deg, #38383d, #222226);
+      border-color: rgba(255, 255, 255, 0.4);
+    }
+    .runaway {
+      position: fixed !important;
+      margin: 0 !important;
+      z-index: 9999;
+      transition: left 0.7s cubic-bezier(0.25, 1, 0.5, 1), top 0.7s cubic-bezier(0.25, 1, 0.5, 1) !important;
+    }
+    .hidden { display: none !important; }
+    #qr-box {
+      margin-top: 10px;
+      animation: popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 16px;
+    }
+    @keyframes popIn {
+      0% { transform: scale(0.8); opacity: 0; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+    .qr-wrapper {
+      background: #ffffff;
+      padding: 14px;
+      border-radius: 18px;
+      box-shadow: 0 12px 35px rgba(0, 0, 0, 0.6);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .qr-hint {
+      font-size: 1.05rem;
+      color: #d1d1d6;
+      font-weight: 500;
+      margin: 0;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="card">
+    <h1 id="title">🎉 С Днём Рождения, Николай Сергеевич! 🎉</h1>
+    <p id="subtitle">У меня для тебя кое-что приготовлено...</p>
+
+    <div class="meme-box" id="meme-box">
+      <img class="meme-img" src="shrek.jpg" alt="С Днём Рождения">
+    </div>
+
+    <div class="meme-box hidden" id="chase-box">
+      <img class="meme-img" src="pogonya.jpg" alt="Не догонишь">
+    </div>
+
+    <div class="buttons" id="btn-box">
+      <button class="btn" id="btn-accept">Принять поздравление</button>
+      <button class="btn" id="btn-decline">Отказаться</button>
+    </div>
+
+    <div id="qr-box" class="hidden">
+      <div class="qr-wrapper">
+        <canvas id="qr-canvas"></canvas>
+      </div>
+      <p class="qr-hint">Наведи камеру телефона, чтобы забрать свои 100 ₽ 💸</p>
+    </div>
+  </div>
+
+  <audio id="bg-music" autoplay preload="auto" loop>
+    <source src="rr.mp3" type="audio/mpeg">
+  </audio>
+
+  <script>
+    const TG_LINK = "https://t.me" + encodeURIComponent("торчишь сотку");
+
+    const title = document.getElementById('title');
+    const subtitle = document.getElementById('subtitle');
+    const memeBox = document.getElementById('meme-box');
+    const chaseBox = document.getElementById('chase-box');
+    const btnBox = document.getElementById('btn-box');
+    const btnAccept = document.getElementById('btn-accept');
+    const btnDecline = document.getElementById('btn-decline');
+    const qrBox = document.getElementById('qr-box');
+    const music = document.getElementById('bg-music');
+
+    let musicPlaying = false;
+
+    function playFallbackMelody() {
+      try {
+        const ctx = new (window.AudioContext || window.webkitAudioContext)();
+        const notes = [
+          [261.63, 0.25], [261.63, 0.25], [293.66, 0.5], [261.63, 0.5], [349.23, 0.5], [329.63, 1.0],
+          [261.63, 0.25], [261.63, 0.25], [293.66, 0.5], [261.63, 0.5], [392.00, 0.5], [349.23, 1.0]
+        ];
+        let time = ctx.currentTime;
+        notes.forEach(([freq, dur]) => {
+          const osc = ctx.createOscillator();
+          const gain = ctx.createGain();
+          osc.type = 'triangle';
+          osc.frequency.setValueAtTime(freq, time);
+          gain.gain.setValueAtTime(0.15, time);
+          gain.gain.exponentialRampToValueAtTime(0.001, time + dur);
+          osc.connect(gain);
+          gain.connect(ctx.destination);
+          osc.start(time);
+          osc.stop(time + dur);
+          time += dur + 0.05;
+        });
+      } catch (e) {}
+    }
+
+    function tryStartMusic(useFallback = false) {
+      if (musicPlaying) return;
+      music.volume = 0.85;
+      music.play()
+        .then(() => { musicPlaying = true; })
+        .catch(() => {
+          if (useFallback) {
+            musicPlaying = true;
+            playFallbackMelody();
+          }
+        });
+    }
+
+    window.addEventListener('DOMContentLoaded', () => tryStartMusic(false));
+    window.addEventListener('load', () => tryStartMusic(false));
+
+    ['click', 'touchstart', 'keydown'].forEach(evt => {
+      document.addEventListener(evt, () => tryStartMusic(true), { once: true });
+    });
+
+    btnDecline.addEventListener('click', () => {
+      tryStartMusic(true);
+      btnDecline.style.transform = 'scale(0)';
+      btnDecline.style.opacity = '0';
+      setTimeout(() => btnDecline.remove(), 250);
+    });
+
+    btnAccept.addEventListener('click', () => {
+      tryStartMusic(true);
+
+      if (memeBox) memeBox.classList.add('hidden');
+
+      title.innerText = "Выбирай подарок 🎁";
+      subtitle.innerText = "Только честно, без обид:";
+
+      btnBox.innerHTML = `
+        <button class="btn" id="btn-iphone">📱 Айфон</button>
+        <button class="btn" id="btn-money">💵 100 ₽</button>
+      `;
+
+      const btnIphone = document.getElementById('btn-iphone');
+      const btnMoney = document.getElementById('btn-money');
+
+      const dodge = (e) => {
+        if (e.type === 'touchstart') e.preventDefault();
+
+        if (chaseBox && chaseBox.classList.contains('hidden')) {
+          chaseBox.classList.remove('hidden');
+        }
+
+        if (!btnIphone.classList.contains('runaway')) {
+          const rect = btnIphone.getBoundingClientRect();
+          document.body.appendChild(btnIphone);
+          btnIphone.style.width = rect.width + 'px';
+          btnIphone.style.left = rect.left + 'px';
+          btnIphone.style.top = rect.top + 'px';
+          btnIphone.classList.add('runaway');
+          void btnIphone.offsetWidth;
+        }
+
+        const padding = 30;
+        const maxX = window.innerWidth - btnIphone.offsetWidth - padding;
+        const maxY = window.innerHeight - btnIphone.offsetHeight - padding;
+
+        const randX = Math.max(padding, Math.floor(Math.random() * maxX));
+        const randY = Math.max(padding, Math.floor(Math.random() * maxY));
+
+        btnIphone.style.left = randX + 'px';
+        btnIphone.style.top = randY + 'px';
+      };
+
+      btnIphone.addEventListener('mouseenter', dodge);
+      btnIphone.addEventListener('touchstart', dodge);
+
+      btnMoney.addEventListener('click', () => {
+        btnIphone.remove();
+        if (chaseBox) chaseBox.classList.add('hidden');
+        btnBox.classList.add('hidden');
+        title.innerText = "Держи свои 100 ₽! 😎";
+        subtitle.innerText = "Отсканируй QR-код ниже:";
+
+        new QRious({
+          element: document.getElementById('qr-canvas'),
+          value: TG_LINK,
+          size: 220,
+          level: 'M'
+        });
+
+        qrBox.classList.remove('hidden');
+      });
+    });
+  </script>
+</body>
+</html>
